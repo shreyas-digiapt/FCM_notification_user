@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FCM testing user</string>
+
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="false">myChannel</string>
+    <string name="fcm_message">My message</string>
+</resources>
