@@ -1,5 +1,6 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,9 +8,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -18,6 +21,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.shreyas.fcmtesting.model.Model
+import com.shreyas.fcmtesting.R
+import com.shreyas.fcmtesting.utiels.getCommand
+import com.shreyas.fcmtesting.utiels.Utiles
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
@@ -26,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var db: FirebaseFirestore
     var token:String? = null
     var name:String? = null
+    var deviceId:String? = null
+
+
 
     companion object {
         val BLACK = "Black"
@@ -34,18 +44,22 @@ class MainActivity : AppCompatActivity() {
         val FROMSERIVCE = "fromIntent"
     }
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        deviceId =  Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(brHandler, IntentFilter("com.shreyas.fcmtesting_FCM"))
         db = FirebaseFirestore.getInstance()
         setUpFirebase()
 
-        Log.d("test_12345", "da: ${(Utiles.getPrefsName(this) == null) }")
+        Log.d("test_12345", "da: ${(deviceId) }")
 
         try {
-            db.collection("users").document(Utiles.getPrefsName(this)!!).get()
+            db.collection("users").document(deviceId!!).get()
                 .addOnSuccessListener { docRef ->
                     if (docRef.exists()) {
 
@@ -90,7 +104,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Field cannot be empty", Toast.LENGTH_SHORT).show()
             } else if (alphaRegex.matches(name!!)) {
                 Toast.makeText(this, "valid", Toast.LENGTH_SHORT).show()
-                checkFirebase(name!!, dialog)
+//                checkFirebase(name!!, dialog)
+                setUpDb(name!!, dialog)
             } else {
 
                 Toast.makeText(this, "Name should be alpha numeric", Toast.LENGTH_SHORT).show()
@@ -98,21 +113,21 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun checkFirebase(name: String, dialog: Dialog) {
-        db.collection("users").document(name).get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                Toast.makeText(this, "The user name already exists",Toast.LENGTH_SHORT).show()
-            }else {
-                setUpDb(name, dialog)
-            }
-        }
-    }
+//    private fun checkFirebase(name: String, dialog: Dialog) {
+//        db.collection("users").document(name).get().addOnSuccessListener { documentSnapshot ->
+//            if (documentSnapshot.exists()) {
+//                Toast.makeText(this, "The user name already exists",Toast.LENGTH_SHORT).show()
+//            }else {
+//                setUpDb(name, dialog)
+//            }
+//        }
+//    }
 
     //create a document of type string key=name and data to that document is token whick obtained from model class
     private fun setUpDb(name: String, dialog: Dialog) {
-        val model = Model(token!!)
+        val model = Model(name, token!!)
 
-        db.collection("users").document(name).set(model).addOnSuccessListener { docRefs->
+        db.collection("users").document(deviceId!!).set(model).addOnSuccessListener { docRefs->
             Toast.makeText(this, "done", Toast.LENGTH_SHORT).show()
             Utiles.setPrefs(this, name, token)
             dialog.dismiss()
@@ -131,7 +146,8 @@ class MainActivity : AppCompatActivity() {
             if (command != null) {
                 setContetnt(command)
             }else {
-                getCommand(this).observe(this, Observer { it->
+                getCommand(this)
+                    .observe(this, Observer { it->
                     command = it.toString()
                 })
                 Log.d("firebase_1234", "service:1111 ${command}")
@@ -142,7 +158,8 @@ class MainActivity : AppCompatActivity() {
             Log.d("firebase_1234", "Exception: ${e.message}")
             try {
                 var command:String = ""
-                    getCommand(this).observe(this, Observer { it->
+                    getCommand(this)
+                        .observe(this, Observer { it->
                     command = it.toString()
                 })
                 Log.d("firebase_1234", "service:1111 ${command}")
@@ -193,8 +210,8 @@ class MainActivity : AppCompatActivity() {
                     }else {
                         Log.d("firebase_123", "newtoken: ${token}")
                         Utiles.setPrefs(this, Utiles.getPrefsName(this)!!, token)
-                        val model = Model(token!!)
-                        db.collection("users").document(Utiles.getPrefsName(this)!!).set(model).addOnSuccessListener{
+                        val model = Model(Utiles.getPrefsName(this)!!, token!!)
+                        db.collection("users").document(deviceId!!).set(model).addOnSuccessListener{
 
                         }
                     }

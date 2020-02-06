@@ -1,4 +1,4 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.utiels
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,12 +13,19 @@ fun getCount(context: Context):Int {
 }
 
 fun getCommand(context: Context): SharedPreferenceStringLiveData {
-    return SharedPreferenceStringLiveData(getCommandPrefs(context), COMMAND, "null")
+    return SharedPreferenceStringLiveData(
+        getCommandPrefs(context),
+        COMMAND,
+        "null"
+    )
 }
 
 fun getCommandPrefs(context: Context): SharedPreferences {
 
-    return context.getSharedPreferences(PREFNAME, MODE)
+    return context.getSharedPreferences(
+        PREFNAME,
+        MODE
+    )
 }
 
 fun setCommand(context: Context, command: String) {

@@ -24,7 +24,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name="com.shreyas.fcmtesting.MainActivity">
+        <activity android:name="com.shreyas.fcmtesting.ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,14 +32,14 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.shreyas.fcmtesting.MyFirebaseMessagingService">
+        <service android:name="com.shreyas.fcmtesting.ui.service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <receiver
-            android:name="com.shreyas.fcmtesting.TestReciver"
+            android:name="com.shreyas.fcmtesting.ui.Reciver.TestReciver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

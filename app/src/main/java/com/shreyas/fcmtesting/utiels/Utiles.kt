@@ -1,4 +1,4 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.utiels
 
 import android.content.Context
 
@@ -12,17 +12,27 @@ class Utiles {
         val TOKEN = "TOKEN"
 
         fun setPrefs(context: Context, name:String, token:String?) {
-            val prefs = context.getSharedPreferences(APPNAME, MODE)
-            prefs.edit().putString(NAME, name).putString(TOKEN, token).apply()
+            val prefs = context.getSharedPreferences(
+                APPNAME,
+                MODE
+            )
+            prefs.edit().putString(NAME, name).putString(
+                TOKEN, token).apply()
         }
 
         fun getPrefsName(context: Context): String? {
-            val prefs = context.getSharedPreferences(APPNAME, MODE)
+            val prefs = context.getSharedPreferences(
+                APPNAME,
+                MODE
+            )
             return prefs.getString(NAME, null)
         }
 
         fun getPrefsToken(context: Context): String? {
-            val prefs = context.getSharedPreferences(APPNAME, MODE)
+            val prefs = context.getSharedPreferences(
+                APPNAME,
+                MODE
+            )
             return prefs.getString(TOKEN, null)
         }
     }

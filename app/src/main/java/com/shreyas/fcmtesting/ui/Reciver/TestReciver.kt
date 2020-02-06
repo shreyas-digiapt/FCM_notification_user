@@ -1,4 +1,4 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.ui.Reciver
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.utiels
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
@@ -58,25 +58,49 @@ class SharedPreferenceStringSetLiveData(sharedPrefs: SharedPreferences, key: Str
 }
 
 fun SharedPreferences.intLiveData(key: String, defValue: Int): SharedPreferenceLiveData<Int> {
-    return SharedPreferenceIntLiveData(this, key, defValue)
+    return SharedPreferenceIntLiveData(
+        this,
+        key,
+        defValue
+    )
 }
 
 fun SharedPreferences.stringLiveData(key: String, defValue: String): SharedPreferenceLiveData<String> {
-    return SharedPreferenceStringLiveData(this, key, defValue)
+    return SharedPreferenceStringLiveData(
+        this,
+        key,
+        defValue
+    )
 }
 
 fun SharedPreferences.booleanLiveData(key: String, defValue: Boolean): SharedPreferenceLiveData<Boolean> {
-    return SharedPreferenceBooleanLiveData(this, key, defValue)
+    return SharedPreferenceBooleanLiveData(
+        this,
+        key,
+        defValue
+    )
 }
 
 fun SharedPreferences.floatLiveData(key: String, defValue: Float): SharedPreferenceLiveData<Float> {
-    return SharedPreferenceFloatLiveData(this, key, defValue)
+    return SharedPreferenceFloatLiveData(
+        this,
+        key,
+        defValue
+    )
 }
 
 fun SharedPreferences.longLiveData(key: String, defValue: Long): SharedPreferenceLiveData<Long> {
-    return SharedPreferenceLongLiveData(this, key, defValue)
+    return SharedPreferenceLongLiveData(
+        this,
+        key,
+        defValue
+    )
 }
 
 fun SharedPreferences.stringSetLiveData(key: String, defValue: Set<String>): SharedPreferenceLiveData<Set<String>> {
-    return SharedPreferenceStringSetLiveData(this, key, defValue)
+    return SharedPreferenceStringSetLiveData(
+        this,
+        key,
+        defValue
+    )
 }

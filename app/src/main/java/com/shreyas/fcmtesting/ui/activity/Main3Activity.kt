@@ -1,7 +1,8 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shreyas.fcmtesting.R
 
 class Main3Activity : AppCompatActivity() {
 

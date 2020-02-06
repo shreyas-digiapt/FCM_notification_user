@@ -1,4 +1,4 @@
-package com.shreyas.fcmtesting
+package com.shreyas.fcmtesting.ui.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,6 +15,10 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.shreyas.fcmtesting.R
+import com.shreyas.fcmtesting.ui.Reciver.TestReciver
+import com.shreyas.fcmtesting.utiels.setCommand
+import com.shreyas.fcmtesting.ui.activity.MainActivity
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -24,7 +28,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         remoteMessage.data.isNotEmpty().let { it->
             Log.d("firebase_1234", "eret: ${remoteMessage.data.get("Command")}")
-            setCommand(this, remoteMessage.data.get("Command")!!)
+            setCommand(
+                this,
+                remoteMessage.data.get("Command")!!
+            )
             val intent = Intent("com.shreyas.fcmtesting_FCM")
             intent.putExtra("fromIntent", remoteMessage.data.get("Command"))
             val lb = LocalBroadcastManager.getInstance(this)
