@@ -34,6 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             )
             val intent = Intent("com.shreyas.fcmtesting_FCM")
             intent.putExtra("fromIntent", remoteMessage.data.get("Command"))
+            intent.putExtra("fromIntentContent", remoteMessage.data.get("Content"))
             val lb = LocalBroadcastManager.getInstance(this)
             lb.sendBroadcast(intent)
         }
@@ -41,7 +42,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val filter  = IntentFilter("com.google.firebase.MESSAGING_EVENT")
             registerReceiver(TestReciver(), filter)
-            showNotification(it?.body!!, remoteMessage)
+//            showNotification(it?.body!!, remoteMessage)
         }
 
     }
@@ -69,6 +70,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setAutoCancel(true)
             .setSmallIcon(R.drawable.icom_123)
             .setContentTitle(getString(R.string.fcm_message))
             .setContentText(messageBody)
